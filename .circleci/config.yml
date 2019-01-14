@@ -1,0 +1,173 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: buildpack-deps:bionic-scm
+      
+    working_directory: ~/repo
+    steps:
+      - run:
+          name: Install base apt packages
+          command: |
+            apt-get update --yes -qq
+            apt-get install --yes -qq python3 python3-venv git-crypt jq
+      - checkout
+      - restore_cache:
+          keys:
+          - v1-dependencies-{{ checksum "requirements.txt" }}
+          # fallback to using the latest cache if no exact match is found
+          - v1-dependencies-
+      - run:
+          name: install dependencies
+          command: |
+            python3 -m venv venv
+            source venv/bin/activate
+            pip install --upgrade -r requirements.txt
+            echo 'export PATH="${HOME}/repo/venv/bin:$PATH"' >> ${BASH_ENV}
+      - setup_remote_docker
+      - save_cache:
+          paths:
+            - ./venv
+          key: v1-dependencies-{{ checksum "requirements.txt" }}
+
+      - run:
+          name: Determine range of commits we are building
+          command: |
+              # CircleCI doesn't have equivalent to Travis' COMMIT_RANGE
+              COMMIT_RANGE=$(./.circleci/get-commit-range.py)
+              echo ${COMMIT_RANGE}
+              echo "export COMMIT_RANGE='${COMMIT_RANGE}'" >> ${BASH_ENV}
+
+      - run:
+          name: Test building data100 image if needed
+          command: |
+            hubploy build \
+              deployments/data100/image \
+              docker.io/berkeleydsep/singleuser-data100 \
+              --commit-range ${COMMIT_RANGE}
+          environment:
+            PYTHONIOENCODING: utf-8
+
+  deploy:
+    docker:
+      - image: buildpack-deps:bionic-scm
+    working_directory: ~/repo
+    steps:
+      - run:
+          name: Install base apt packages
+          command: |
+            apt-get update -qq --yes
+            apt-get install -qq --yes python3 python3-venv git-crypt lsb-release apt-transport-https
+
+      - checkout
+
+      # Download and cache dependencies
+      - restore_cache:
+          keys:
+          - v1-dependencies-aks-{{ checksum "requirements.txt" }}
+          # fallback to using the latest cache if no exact match is found
+          - v1-dependencies-aks-
+
+      - run:
+          name: install dependencies
+          command: |
+            python3 -m venv venv
+            source venv/bin/activate
+            pip install --upgrade -r requirements.txt
+
+            # Be careful with quote ordering here. ${PATH} must not be expanded
+            echo 'export PATH="${HOME}/repo/venv/bin:${PATH}"' >> ${BASH_ENV}
+
+      - run:
+          name: determine distribution codename
+          command: |
+            LSB_RELEASE_CODENAME=$(lsb_release -cs)
+            echo $LSB_RELEASE_CODENAME
+            echo "export LSB_RELEASE_CODENAME='${LSB_RELEASE_CODENAME}'" >> ${BASH_ENV}
+
+      # https://docs.microsoft.com/en-us/cli/azure/install-azure-cli-apt?view=azure-cli-latest
+      - run:
+          name: install azure client
+          command: |
+            echo "deb [arch=amd64] https://packages.microsoft.com/repos/azure-cli/ $LSB_RELEASE_CODENAME main" | tee /etc/apt/sources.list.d/azure-cli.list
+            apt-key --keyring /etc/apt/trusted.gpg.d/Microsoft.gpg adv \
+                --keyserver packages.microsoft.com \
+                --recv-keys BC528686B50D79E339D3721CEB3E94ADBE1229CF
+            apt-get update  -qq --yes 
+            apt-get install -qq --yes azure-cli
+
+      - setup_remote_docker
+        
+      - save_cache:
+          paths:
+            - ./venv
+          key: v1-dependencies-aks-{{ checksum "requirements.txt" }}
+
+      - run:
+          name: Determine range of commits we are building
+          command: |
+              # CircleCI doesn't have equivalent to Travis' COMMIT_RANGE
+              COMMIT_RANGE=$(./.circleci/get-commit-range.py)
+              echo ${COMMIT_RANGE}
+              echo "export COMMIT_RANGE='${COMMIT_RANGE}'" >> ${BASH_ENV}
+
+      - run:
+          name: Login to docker.io
+          command: |
+            docker login -u $DOCKER_REG_USER -p $DOCKER_REG_PASS
+
+      - run:
+          name: Build datahub image if needed
+          command: |
+            hubploy build \
+              --push \
+              --commit-range ${COMMIT_RANGE} \
+              deployments/data100/image/ docker.io/berkeleydsep/singleuser-data100
+          environment:
+            PYTHONIOENCODING: utf-8
+
+      - run:
+          name: Unlock our secrets
+          command: |
+            echo "${GIT_CRYPT_KEY}" | base64 -d > ~/repo/key
+            git crypt unlock ~/repo/key
+            rm ~/repo/key
+
+      - run:
+          name: Authenticate to Azure
+          command: |
+            az login --service-principal \
+                -u ${AZ_USER} -p ${AZ_PASS} --tenant ${AZ_TNNT}
+            az account set -s data100-19s
+
+      - run:
+          name: Install helm
+          command: |
+            curl https://storage.googleapis.com/kubernetes-helm/helm-v2.12.0-linux-amd64.tar.gz | \
+              tar -xzf -
+            mv linux-amd64/helm /usr/local/bin
+            helm init --client-only
+            helm repo add jupyterhub https://jupyterhub.github.io/helm-chart/
+            helm repo update
+
+      #- run:
+      #    name: Deploy data100
+      #    command: |
+      #      hubploy deploy data100 hub ${CIRCLE_BRANCH}
+
+workflows:
+  version: 2
+  build-and-deploy:
+    jobs:
+      - build:
+          filters:
+            branches:
+              ignore:
+                - staging
+                - prod
+      - deploy:
+          filters:
+            branches:
+              only:
+                - staging
+                - prod
