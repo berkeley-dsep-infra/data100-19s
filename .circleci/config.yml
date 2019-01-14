@@ -79,7 +79,7 @@ jobs:
             echo 'export PATH="${HOME}/repo/venv/bin:${PATH}"' >> ${BASH_ENV}
 
       - run:
-          name: determine distribution codename
+          name: Set distribution codename
           command: |
             LSB_RELEASE_CODENAME=$(lsb_release -cs)
             echo $LSB_RELEASE_CODENAME
@@ -87,7 +87,7 @@ jobs:
 
       # https://docs.microsoft.com/en-us/cli/azure/install-azure-cli-apt?view=azure-cli-latest
       - run:
-          name: install azure client
+          name: Install azure client
           command: |
             echo "deb [arch=amd64] https://packages.microsoft.com/repos/azure-cli/ $LSB_RELEASE_CODENAME main" | tee /etc/apt/sources.list.d/azure-cli.list
             apt-key --keyring /etc/apt/trusted.gpg.d/Microsoft.gpg adv \
