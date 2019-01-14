@@ -1,0 +1,11 @@
+jupyterhub:
+  hub:
+    db:
+      pvc:
+        storageClassName: managed-premium
+  singleuser:
+    memory:
+      guarantee: 1G
+      limit: 1G
+    image:
+      name: docker.io/berkeleydsep/singleuser-data100
