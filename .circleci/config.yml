@@ -112,6 +112,7 @@ jobs:
               # CircleCI doesn't have equivalent to Travis' COMMIT_RANGE
               echo CIRCLE_PROJECT_USERNAME=${CIRCLE_PROJECT_USERNAME}
               echo CIRCLE_PROJECT_REPONAME=${CIRCLE_PROJECT_REPONAME}
+              echo CIRCLE_PR_NUMBER=${CIRCLE_PR_NUMBER}
               echo CIRCLE_COMPARE_URL=${CIRCLE_COMPARE_URL}
               COMMIT_RANGE=$(./.circleci/get-commit-range.py)
               echo COMMIT_RANGE=${COMMIT_RANGE}
