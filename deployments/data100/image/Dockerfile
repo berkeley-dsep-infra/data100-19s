@@ -91,7 +91,7 @@ ADD ipython_config.py ${CONDA_PREFIX}/envs/data100/etc/ipython/
 
 RUN pip install --no-cache-dir jupyterhub==0.9.2
 
-RUN pip install psycopg2==2.7.5
+RUN pip install psycopg2==2.7.6.1
 
 # Installed in conda environment
 RUN jupyter serverextension enable --sys-prefix --py jupyterlab
