@@ -156,6 +156,14 @@ jobs:
             helm repo update
 
       - run:
+          name: Get cluster credentials
+          command: |
+            az aks get-credentials \
+                --name data100-19s \
+                --resource-group data100-19s \
+                --output table
+
+      - run:
           name: Deploy data100
           command: |
             hubploy deploy data100 hub ${CIRCLE_BRANCH}
