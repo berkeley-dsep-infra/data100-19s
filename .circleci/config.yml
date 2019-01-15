@@ -121,7 +121,7 @@ jobs:
       - run:
           name: Login to docker.io
           command: |
-            docker login -u "$DOCKER_REG_USER" -p "$DOCKER_REG_PASS"
+            docker login -u "$DOCKER_USER" -p "$DOCKER_PASS"
 
       - run:
           name: Build datahub image if needed
