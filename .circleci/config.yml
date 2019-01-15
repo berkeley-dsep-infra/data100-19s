@@ -60,7 +60,7 @@ jobs:
           name: Install base apt packages
           command: |
             apt-get update -qq --yes
-            apt-get install -qq --yes python3 python3-venv git-crypt lsb-release apt-transport-https
+            apt-get install -qq --yes python3 python3-venv git-crypt lsb-release apt-transport-https docker.io
 
       - checkout
 
@@ -121,7 +121,7 @@ jobs:
       - run:
           name: Login to docker.io
           command: |
-            docker login -u $DOCKER_REG_USER -p $DOCKER_REG_PASS
+            docker login -u "$DOCKER_REG_USER" -p "$DOCKER_REG_PASS"
 
       - run:
           name: Build datahub image if needed
