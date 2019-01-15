@@ -103,7 +103,7 @@ RUN jupyter nbextension enable --sys-prefix --py nbgrader
 RUN jupyter serverextension enable --sys-prefix --py nbgrader
 
 # For dask dashboard
-RUN pip install nbserverproxy==0.8.3
+RUN pip install nbserverproxy==0.8.8
 RUN jupyter serverextension enable --sys-prefix --py nbserverproxy
 
 # Disabling the autosavetime interval
@@ -124,7 +124,7 @@ RUN jupyter serverextension enable  --sys-prefix --py nbzip
 RUN jupyter nbextension install     --sys-prefix --py nbzip
 RUN jupyter nbextension enable      --sys-prefix --py nbzip
 
-RUN pip install ray==0.5.3
+RUN pip install ray==0.6.1
 
 # Useful for debugging any issues with conda
 RUN conda info -a
