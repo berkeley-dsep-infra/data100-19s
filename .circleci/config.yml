@@ -155,10 +155,10 @@ jobs:
             helm repo add jupyterhub https://jupyterhub.github.io/helm-chart/
             helm repo update
 
-      #- run:
-      #    name: Deploy data100
-      #    command: |
-      #      hubploy deploy data100 hub ${CIRCLE_BRANCH}
+      - run:
+          name: Deploy data100
+          command: |
+            hubploy deploy data100 hub ${CIRCLE_BRANCH}
 
 workflows:
   version: 2
