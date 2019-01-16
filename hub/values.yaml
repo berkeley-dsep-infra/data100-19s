@@ -2,7 +2,12 @@ jupyterhub:
   scheduling:
     userScheduler:
       enabled: true
+  proxy:
+    https:
+      letsencrypt:
+        contactEmail: rylo@berkeley.edu
   singleuser:
+    defaultUrl: "/lab"
     initContainers:
       - name: volume-mount-hack
         image: busybox
@@ -18,6 +23,38 @@ jupyterhub:
       static:
         pvcName: home-nfs
         subPath: "home/{username}"
+  hub:
+    db:
+      pvc:
+        # This also holds logs
+        storage: 40Gi
+    extraConfig:
+      01-custom-attr-spawner: |
+        from kubespawner import KubeSpawner
+        from tornado import gen
+        import yaml
+        import os
+
+        class CustomAttrSpawner(KubeSpawner):
+
+          @gen.coroutine
+          def start(self):
+            with open('/etc/jupyterhub/config/custom.memory') as f:
+              custom_attr_lists = yaml.safe_load(f)
+              for attr, users in custom_attr_lists.items():
+                if self.user.name in users:
+                  self.mem_limit = attr
+                  self.mem_guarantee = attr
+                  break
+
+            return (yield super().start())
+
+        c.JupyterHub.spawner_class = CustomAttrSpawner
+
+        c.JupyterHub.extra_log_file = '/srv/jupyterhub/jupyterhub.log'
+
+      02-lab-availability: |
+        c.Spawner.cmd = ['jupyter-labhub']
 
 homeDirectories:
   nfs:

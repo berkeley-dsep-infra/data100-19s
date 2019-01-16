@@ -10,10 +10,3 @@ jupyterhub:
     https:
       hosts:
         - data100.datahub.berkeley.edu
-      letsencrypt:
-        contactEmail: rylo@berkeley.edu
-  hub:
-    db:
-      pvc:
-        # This also holds logs
-        storage: 40Gi
