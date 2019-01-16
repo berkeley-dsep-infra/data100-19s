@@ -53,6 +53,11 @@ RUN apt-get install --yes \
 		texlive-fonts-recommended \
 		texlive-generic-recommended
 
+# for jupyterlab
+RUN apt-get install --yes --no-install-recommends \
+		# for nbconvert
+		nodejs
+
 # Keep image size at a minimum
 RUN apt-get clean
 
