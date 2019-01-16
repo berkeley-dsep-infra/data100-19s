@@ -9,7 +9,7 @@ jupyterhub:
     #  loadBalancerIP: 35.232.190.188
     https:
       hosts:
-        - data100s.datahub.berkeley.edu
+        - data100.datahub.berkeley.edu
       letsencrypt:
         contactEmail: rylo@berkeley.edu
   hub:

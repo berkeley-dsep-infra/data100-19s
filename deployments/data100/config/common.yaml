@@ -9,3 +9,15 @@ jupyterhub:
       limit: 1G
     image:
       name: docker.io/berkeleydsep/singleuser-data100
+  auth:
+    type: google
+    admin:
+      users:
+        # infrastructure
+        - rylo
+        - yuvipanda
+        # instructors
+        - denero
+        - sandrine
+        # gsis
+        - xmo
