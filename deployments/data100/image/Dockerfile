@@ -18,7 +18,6 @@ RUN apt-get install --yes \
 		python3.6-dev \
 		tar \
 		vim \
-		nodejs \
 		locales
 
 # Other packages for user convenience and Data100 usage
@@ -52,11 +51,6 @@ RUN apt-get install --yes \
 		texlive-xetex \
 		texlive-fonts-recommended \
 		texlive-generic-recommended
-
-# for jupyterlab
-RUN apt-get install --yes --no-install-recommends \
-		# for nbconvert
-		nodejs
 
 # Keep image size at a minimum
 RUN apt-get clean
