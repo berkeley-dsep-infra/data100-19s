@@ -89,42 +89,17 @@ ENV PATH ${CONDA_PREFIX}/envs/data100/bin:$PATH
 ADD jupyter_notebook_config.py ${CONDA_PREFIX}/envs/data100/etc/jupyter/
 ADD ipython_config.py ${CONDA_PREFIX}/envs/data100/etc/ipython/
 
-RUN pip install --no-cache-dir jupyterhub==0.9.2
-
-RUN pip install psycopg2==2.7.6.1
-
 # Installed in conda environment
 RUN jupyter serverextension enable --sys-prefix --py jupyterlab
 
-#RUN pip install nbgrader==0.5.4
-RUN pip install git+git://github.com/berkeley-dsep-infra/nbgrader.git@7aba39a
-RUN jupyter nbextension install --sys-prefix --py nbgrader
-RUN jupyter nbextension enable --sys-prefix --py nbgrader
-RUN jupyter serverextension enable --sys-prefix --py nbgrader
+RUN jupyter labextension install @jupyterlab/hub-extension
 
 # For dask dashboard
-RUN pip install nbserverproxy==0.8.8
 RUN jupyter serverextension enable --sys-prefix --py nbserverproxy
-
-# Disabling the autosavetime interval
-# Install nb extensions
-RUN pip install jupyter_contrib_nbextensions
-# We install, ignoring running servers
-# RUN jupyter contrib nbextensions install --sys-prefix --skip-running-check
-# Enable autosavetime which will by default disable autosave
-# RUN jupyter nbextension enable autosavetime/main
-
-# Install nbgitpuller
-RUN pip install --no-cache-dir nbgitpuller==0.6.1
-
-# Install nbzip
-RUN pip install --no-cache-dir nbzip==0.1.0
 
 RUN jupyter serverextension enable  --sys-prefix --py nbzip
 RUN jupyter nbextension install     --sys-prefix --py nbzip
 RUN jupyter nbextension enable      --sys-prefix --py nbzip
-
-RUN pip install ray==0.6.1
 
 # Useful for debugging any issues with conda
 RUN conda info -a

@@ -85,3 +85,11 @@ dependencies:
   - cufflinks==0.12.1
   - jupyterlab==0.35.4
   - tweepy==3.5.0
+  - nbzip==0.1.0
+  - nbgitpuller==0.6.1
+  - ray==0.6.1
+  - jupyter-contrib-nbextensions==0.5.1
+  - psycopg2==2.7.6.1
+  - jupyterhub==0.9.2
+  - nbserverproxy==0.8.8
+
