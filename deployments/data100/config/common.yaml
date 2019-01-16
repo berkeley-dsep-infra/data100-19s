@@ -10,6 +10,7 @@ jupyterhub:
     image:
       name: docker.io/berkeleydsep/singleuser-data100
   auth:
+    type: google
     admin:
       users:
         # infrastructure
