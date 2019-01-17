@@ -34,6 +34,7 @@ jupyterhub:
         from tornado import gen
         import yaml
         import os
+        import z2jh
 
         class CustomAttrSpawner(KubeSpawner):
 
@@ -48,6 +49,14 @@ jupyterhub:
                     self.mem_guarantee = attr
                     break
 
+            # new style
+            custom_memory = z2jh.get_config('custom.memory', {})
+            for attr, users in custom_memory.items():
+              if self.user.name in users:
+                self.mem_limit = attr
+                self.mem_guarantee = attr
+                break
+                
             return (yield super().start())
 
         c.JupyterHub.spawner_class = CustomAttrSpawner
