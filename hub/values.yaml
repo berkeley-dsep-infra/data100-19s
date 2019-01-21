@@ -7,7 +7,7 @@ jupyterhub:
       letsencrypt:
         contactEmail: rylo@berkeley.edu
   singleuser:
-    defaultUrl: "/lab"
+    defaultUrl: "/tree"
     initContainers:
       - name: volume-mount-hack
         image: busybox
