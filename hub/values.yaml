@@ -1,4 +1,7 @@
 jupyterhub:
+  prePuller:
+    continuous:
+      enabled: true
   scheduling:
     userScheduler:
       enabled: true
