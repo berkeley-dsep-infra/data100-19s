@@ -94,4 +94,5 @@ dependencies:
   - nbserverproxy==0.8.8
   - jassign==0.0.4
   - okpy==1.13.11
+  - tqdm==4.9.21
 
