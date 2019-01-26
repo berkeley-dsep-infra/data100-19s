@@ -6,7 +6,7 @@ jupyterhub:
   singleuser:
     memory:
       guarantee: 768M
-      limit: 1.5G
+      limit: 1536M
     image:
       name: docker.io/berkeleydsep/singleuser-data100
   auth:
