@@ -5,8 +5,8 @@ jupyterhub:
         storageClassName: managed-premium
   singleuser:
     memory:
-      guarantee: 512M
-      limit: 1.5G
+      guarantee: 2G # for week of JAN 27 only. Original: 512M
+      limit: 2.1G
     image:
       name: docker.io/berkeleydsep/singleuser-data100
   auth:
