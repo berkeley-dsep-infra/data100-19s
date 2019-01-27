@@ -2,6 +2,8 @@ jupyterhub:
   prePuller:
     continuous:
       enabled: true
+  cull:
+    enabled: false
   scheduling:
     userScheduler:
       enabled: true
