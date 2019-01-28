@@ -1,7 +1,12 @@
+nfsMounter:
+  enabled: true
+
 jupyterhub:
   prePuller:
     continuous:
       enabled: true
+    hook:
+      enabled: false
   cull:
     enabled: false
   scheduling:
