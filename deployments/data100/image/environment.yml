@@ -91,7 +91,7 @@ dependencies:
   - psycopg2==2.7.6.1
   - jupyterhub==0.9.2
   - nbserverproxy==0.8.8
-  - jassign==0.0.5
+  - jassign==0.0.6
   - okpy==1.13.11
   - tqdm==4.29.1
   - nbconvert=4.3.0
