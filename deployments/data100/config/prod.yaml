@@ -1,3 +1,7 @@
+nfsMounter:
+  mounts:
+    - 10.240.0.7:/homes/prod/home=/homes/prod
+
 homeDirectories:
   nfs:
     serverIP: 10.240.0.7
