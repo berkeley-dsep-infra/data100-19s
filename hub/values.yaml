@@ -7,8 +7,8 @@ jupyterhub:
       enabled: true
     hook:
       enabled: false
-  cull:
-    enabled: false
+  #cull:
+  #  enabled: false
   scheduling:
     userScheduler:
       enabled: true
