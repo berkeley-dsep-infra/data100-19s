@@ -14,3 +14,12 @@ jupyterhub:
     https:
       hosts:
         - data100.datahub.berkeley.edu
+  singleuser:
+    storage:
+      extraVolumes:
+        - name: home
+          hostPath:
+            path: /homes/prod/{username}
+      extraVolumeMounts:
+        - name: home
+          mountPath: /home/jovyan
