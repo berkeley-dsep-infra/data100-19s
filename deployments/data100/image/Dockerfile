@@ -96,12 +96,14 @@ RUN jupyter labextension install @jupyterlab/hub-extension
 # For dask dashboard
 RUN jupyter serverextension enable --sys-prefix --py nbserverproxy
 
+RUN conda info -a
+
 RUN jupyter serverextension enable  --sys-prefix --py nbzip
 RUN jupyter nbextension install     --sys-prefix --py nbzip
 RUN jupyter nbextension enable      --sys-prefix --py nbzip
 
 # Useful for debugging any issues with conda
-RUN conda info -a
+#RUN conda info -a
 
 # Make JupyterHub ports visible
 EXPOSE 8888
