@@ -1,3 +1,6 @@
+nfsMounter:
+  enabled: true
+
 jupyterhub:
   prePuller:
     continuous:
