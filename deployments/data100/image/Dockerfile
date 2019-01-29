@@ -105,5 +105,8 @@ RUN jupyter nbextension enable      --sys-prefix --py nbzip
 # Useful for debugging any issues with conda
 #RUN conda info -a
 
+# use docker cache for now; migrate to env/req after the term
+RUN pip install nbresuse==0.3.0
+
 # Make JupyterHub ports visible
 EXPOSE 8888
