@@ -84,8 +84,11 @@ RUN conda env create -q -f /tmp/environment.yml
 # environment won't be preserved here.
 ENV PATH ${CONDA_PREFIX}/envs/data100/bin:$PATH
 
-# Set bash as shell in terminado. Disable history.
-ADD jupyter_notebook_config.py ${CONDA_PREFIX}/envs/data100/etc/jupyter/
+# Set bash as shell in terminado.
+ADD jupyter_notebook_config.py  ${CONDA_PREFIX}/envs/data100/etc/jupyter/
+# Bypass bibtex
+ADD jupyter_nbconvert_config.py ${CONDA_PREFIX}/envs/data100/etc/jupyter/
+# Disable history.
 ADD ipython_config.py ${CONDA_PREFIX}/envs/data100/etc/ipython/
 
 # Installed in conda environment
