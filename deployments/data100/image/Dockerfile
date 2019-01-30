@@ -61,6 +61,9 @@ RUN install -d -o jovyan -g jovyan ${CONDA_PREFIX}
 
 WORKDIR /home/jovyan
 
+# prevent bibtex from interupting nbconvert
+RUN update-alternatives --install /usr/bin/bibtex bibtex /bin/true 200
+
 USER jovyan
 
 ####################################################################
@@ -97,20 +100,12 @@ RUN jupyter labextension install @jupyterlab/hub-extension
 # For dask dashboard
 RUN jupyter serverextension enable --sys-prefix --py nbserverproxy
 
-RUN conda info -a
-
 RUN jupyter serverextension enable  --sys-prefix --py nbzip
 RUN jupyter nbextension install     --sys-prefix --py nbzip
 RUN jupyter nbextension enable      --sys-prefix --py nbzip
 
 # Useful for debugging any issues with conda
-#RUN conda info -a
-
-# use docker cache for now; migrate to env/req after the term
-RUN pip install nbresuse==0.3.0
-
-# prevent bibtex from interupting nbconvert
-RUN update-alternatives --install /usr/bin/bibtex bibtex /bin/true 200
+RUN conda info -a
 
 # Make JupyterHub ports visible
 EXPOSE 8888
