@@ -86,8 +86,6 @@ ENV PATH ${CONDA_PREFIX}/envs/data100/bin:$PATH
 
 # Set bash as shell in terminado.
 ADD jupyter_notebook_config.py  ${CONDA_PREFIX}/envs/data100/etc/jupyter/
-# Bypass bibtex
-ADD jupyter_nbconvert_config.py ${CONDA_PREFIX}/envs/data100/etc/jupyter/
 # Disable history.
 ADD ipython_config.py ${CONDA_PREFIX}/envs/data100/etc/ipython/
 
@@ -110,6 +108,9 @@ RUN jupyter nbextension enable      --sys-prefix --py nbzip
 
 # use docker cache for now; migrate to env/req after the term
 RUN pip install nbresuse==0.3.0
+
+# prevent bibtex from interupting nbconvert
+RUN update-alternatives --install /usr/bin/bibtex bibtex /bin/true 200
 
 # Make JupyterHub ports visible
 EXPOSE 8888
