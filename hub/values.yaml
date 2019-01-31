@@ -65,6 +65,13 @@ jupyterhub:
       02-lab-availability: |
         c.Spawner.cmd = ['jupyter-labhub']
 
+      # AKS by default sets the k8s master host to a public hostname,
+      # that is fronted by AWS LB. This causes read timeouts frequently.
+      # Attempt to work around this with https://github.com/jupyterhub/kubespawner/issues/282
+      03-aks-local: |
+        import os
+        os.environ['KUBERNETES_SERVICE_HOST'] = 'kubernetes.default.svc.cluster.local'
+
 homeDirectories:
   nfs:
     serverPath: "/homes"
