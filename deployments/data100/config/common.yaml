@@ -1,5 +1,10 @@
 jupyterhub:
   hub:
+    # AKS by default sets the k8s master host to a public hostname,
+    # that is fronted by AWS LB. This causes read timeouts frequently.
+    # Attempt to work around this with https://github.com/jupyterhub/kubespawner/issues/282
+    extraEnv:
+      KUBERNETES_SERVICE_HOST: kubernetes.default.svc.cluster.local
     db:
       pvc:
         storageClassName: managed-premium
