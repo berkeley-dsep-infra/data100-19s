@@ -22,6 +22,7 @@ jupyterhub:
         - denero
         - sandrine
         # gsis
+        - data100.instructors
         - sona.jeswani
         - philippe_boileau
         - suraj.rampure
