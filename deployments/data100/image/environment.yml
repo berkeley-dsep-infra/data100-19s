@@ -63,7 +63,8 @@ dependencies:
 - scikit-image=0.13.0
 - scikit-learn=0.19.1
 - scipy=1.1.0
-- seaborn=0.9.0
+# see below for seaborn version
+#- seaborn=0.9.0
 - setuptools=38.4.0
 - simplegeneric=0.8.1
 - sip=4.19.8
@@ -97,3 +98,5 @@ dependencies:
   - nbresuse==0.3.0
   # nbconvert 5.4.0 with pdf export fix
   - git+https://github.com/ryanlovett/nbconvert.git@16fe302
+  # Install seaborn via pip, it will update pandas along the way
+  - seaborn==0.9.0
