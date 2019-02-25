@@ -159,7 +159,7 @@ jobs:
           name: Get cluster credentials
           command: |
             az aks get-credentials \
-                --name data100-19s \
+                --name data100-19s-2 \
                 --resource-group data100-19s \
                 --output table
 
