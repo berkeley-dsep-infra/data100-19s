@@ -50,7 +50,7 @@ kubectl -n logging create ds-fluent-bit-file.yaml
 
 1. Find the pod with the attached logging disk
 ```
-collector_pod=`kubectl -n logging get pod -l app=collector-app --output=jsonpath={.items..metadata.name}`
+collector_pod=`kubectl -n logging get pod -l app=collector-app -o name | cut -d/ -f2`
 ```
 
 2. View the live log
