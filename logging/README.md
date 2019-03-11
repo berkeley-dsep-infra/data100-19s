@@ -28,9 +28,9 @@ kubectl -n logging create collector.yaml
 
 3. Create a ConfigMap that will be used by the DaemonSet.
 
-#	- specifying container log to read
-#	- filters input (removes "/metrics")
-#   - forwards output to a "collector" service.
+	- specifying container log to read
+	- filters input (removes "/metrics")
+	- forwards output to a "collector" service.
 
 ```
 kubectl -n logging create cm-fluent-bit-file.yaml
@@ -38,8 +38,8 @@ kubectl -n logging create cm-fluent-bit-file.yaml
 
 4. Create a DaemonSet
 
-#  - Runs fluent-bit on each node
-#  - hostpath volumes to mount within the fluent-bit pod
+	- Runs fluent-bit on each node
+	- hostpath volumes to mount within the fluent-bit pod
 
 ```
 kubectl -n logging create ds-fluent-bit-file.yaml
@@ -50,15 +50,15 @@ kubectl -n logging create ds-fluent-bit-file.yaml
 
 1. Find the pod with the attached logging disk
 ```
-collector_pod=$(kubectl -n logging get pod -l app=collector-app --output=jsonpath={.items..metadata.name})
+collector_pod=`kubectl -n logging get pod -l app=collector-app --output=jsonpath={.items..metadata.name}`
 ```
 
-2. View the live log
+2a. View the live log
 ```
 kubectl -n logging exec -it ${collector_pod} -- /usr/bin/tail -f /srv/events.log
 ```
 
-3. Save the log locally
+2b. Save the log locally
 ```
 kubectl -n logging cp ${collector_pod}:/srv/events.log .
 ```
