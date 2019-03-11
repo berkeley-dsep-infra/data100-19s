@@ -53,12 +53,12 @@ kubectl -n logging create ds-fluent-bit-file.yaml
 collector_pod=`kubectl -n logging get pod -l app=collector-app --output=jsonpath={.items..metadata.name}`
 ```
 
-2a. View the live log
+2. View the live log
 ```
 kubectl -n logging exec -it ${collector_pod} -- /usr/bin/tail -f /srv/events.log
 ```
 
-2b. Save the log locally
+3. Save the log locally
 ```
 kubectl -n logging cp ${collector_pod}:/srv/events.log .
 ```
