@@ -51,7 +51,7 @@ spec:
           - -o
           - file
           - -p
-          - path=/srv/events.log
+          - path=/srv/events-{{ .Release.Name }}.log
           - -p
           - match=*
           - -o
