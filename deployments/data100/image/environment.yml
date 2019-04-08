@@ -100,3 +100,4 @@ dependencies:
   - git+https://github.com/ryanlovett/nbconvert.git@16fe302
   # Install seaborn via pip, it will update pandas along the way
   - seaborn==0.9.0
+  - graphviz==0.10.1
