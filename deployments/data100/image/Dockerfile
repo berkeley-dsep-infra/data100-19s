@@ -97,9 +97,6 @@ RUN jupyter serverextension enable --sys-prefix --py jupyterlab
 
 RUN jupyter labextension install @jupyterlab/hub-extension
 
-# For dask dashboard
-RUN jupyter serverextension enable --sys-prefix --py nbserverproxy
-
 RUN jupyter serverextension enable  --sys-prefix --py nbzip
 RUN jupyter nbextension install     --sys-prefix --py nbzip
 RUN jupyter nbextension enable      --sys-prefix --py nbzip
