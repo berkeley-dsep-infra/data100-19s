@@ -102,3 +102,4 @@ dependencies:
   # Install seaborn via pip, it will update pandas along the way
   - seaborn==0.9.0
   - graphviz==0.10.1
+  - ray[debug]==0.6.5
