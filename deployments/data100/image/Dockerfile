@@ -52,6 +52,9 @@ RUN apt-get install --yes \
 		texlive-fonts-recommended \
 		texlive-generic-recommended
 
+# for pdf export
+RUN apt-get install --yes wkhtmltopdf
+
 # Keep image size at a minimum
 RUN apt-get clean
 
