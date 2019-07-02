@@ -55,7 +55,20 @@ jupyterhub:
                 self.mem_limit = attr
                 self.mem_guarantee = attr
                 break
-                
+
+            for name, volume in z2jh.get_config('custom.volumes').items():
+              if self.user.name in volume['users']:
+                # do not duplicate volume or volume mounts
+                has_vol = list(filter(lambda x: x['name'] == name, self.volumes))
+                if len(has_vol) > 0: break
+                self.volumes.append({
+                  'name':name, 'hostPath': {'path': volume['hostPath']}
+                  })
+                self.volume_mounts.append({
+                  'name':name, 'mountPath': volume['mountPath']
+                  })
+                break
+
             ## Note(simon): We are going to use filesystem /tmp
             ##              instead of shm
             ## Create shm volume -- docker's container limit is too small
