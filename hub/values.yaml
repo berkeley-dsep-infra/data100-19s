@@ -56,7 +56,7 @@ jupyterhub:
                 self.mem_guarantee = attr
                 break
 
-            for name, volume in custom_config.get('volumes').items():
+            for name, volume in z2jh.get_config('custom.volumes').items():
               if self.user.name in volume['users']:
                 # do not duplicate volume or volume mounts
                 has_vol = list(filter(lambda x: x['name'] == name, self.volumes))
